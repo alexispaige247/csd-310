@@ -1,2 +1,2 @@
 # csd-310
-Assignment 1.2
+Database Development and Use
