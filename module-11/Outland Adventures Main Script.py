@@ -10,6 +10,10 @@ config = {
     "raise_on_warnings": True
 }
 
+# Initialize to avoid 'can be undefined' warnings
+db = None
+cursor = None
+
 try:
     db = mysql.connector.connect(**config)
     cursor = db.cursor()
@@ -25,7 +29,7 @@ try:
         cursor.execute(query)
         rows = cursor.fetchall()
         for row in rows:
-            print(row)
+            print(" | ".join(str(value) for value in row))
 
     input("\n\nPress any key to exit...")
 
@@ -38,5 +42,7 @@ except mysql.connector.Error as err:
         print(err)
 
 finally:
-    if 'db' in locals() and db.is_connected():
+    if cursor is not None:
+        cursor.close()
+    if db is not None and db.is_connected():
         db.close()
